@@ -158,7 +158,7 @@ public class MainFrame extends JFrame {
                 information.add(group);
                 information.add(Box.createVerticalStrut(10));
                 try {
-                    JLabel image = new JLabel(new ImageIcon(MainFrame.class.getResource("Stitch2.gif")));
+                    JLabel image = new JLabel(new ImageIcon(MainFrame.class.getResource("Stitch.gif")));
                     image.setSize(100,150);
                     information.add(image);
                 } catch (Exception e) {
@@ -324,27 +324,24 @@ public class MainFrame extends JFrame {
     }
 
     protected void saveToCSVFile(File selectedFile) {
-			/*try{
-				Csv.Writer writer = new Csv.Writer(selectedFile);
-				writer.value("���������� ������������� ���������� �� ����� �������");
-				writer.newLine();
-				writer.value("�������� �� " + data.getFrom() + " �� " + data.getTo() + " � ����� " +  data.getStep());
-				writer.newLine();
-				writer.value("�������� X");
-				writer.value("�������� ����������");
-				writer.value("��������");
-				writer.value("�������");
-				writer.newLine();
+			try{
+				PrintWriter writer = new PrintWriter(selectedFile);
+				writer.println("Вычисление значения многочлена по схеме Горнера");
+				writer.println("Значение X изменяется от " + data.getFrom() + " до " + data.getTo() + " с шагом " +  data.getStep());
+				writer.print("Значение X");
+				writer.print("Значение многочлена ");
+				writer.print("Обратный порядок");
+				writer.println("Разность");
 				for (int i = 0; i < data.getRowCount(); i++){
 					for(int k = 0; k < data. getColumnCount(); k++)
 					{
-						writer.value(formatter.format(data.getValueAt(i, k)));
+						writer.print(formatter.format(data.getValueAt(i, k)));
 						}
-					writer.newLine();
+					writer.println("");
 					}
 				writer.close();
 				}catch(Exception e){
 
-				}*/
+				}
     }
 }

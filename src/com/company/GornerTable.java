@@ -18,7 +18,7 @@ public class GornerTable extends AbstractTableModel {
         this.coefficients = coefficients;
     }
 
-    public Double[] getcoefficients() {
+    public Double[] getCoefficients() {
         return coefficients;
     }
 
