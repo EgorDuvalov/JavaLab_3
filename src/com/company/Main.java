@@ -15,7 +15,7 @@ public class Main {
         frame.setVisible(true);
     }
 
-    public static Double[] getCoefficients() throws IOException {
+    public static Double[] getCoefficients(){
         try {
             BufferedReader bf = new BufferedReader(new FileReader("Initial_Data.txt"));
             int amount = Integer.parseInt(bf.readLine());

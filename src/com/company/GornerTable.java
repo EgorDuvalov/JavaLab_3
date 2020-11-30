@@ -62,12 +62,10 @@ public class GornerTable extends AbstractTableModel {
         }
     }
 
-    @Override
     public Class<?> getColumnClass(int col) {
         return Double.class;
     }
 
-    @Override
     public Object getValueAt(int row, int col) {
         Double x=from+step*row;
         Double result1=0.0, result2=0.0;

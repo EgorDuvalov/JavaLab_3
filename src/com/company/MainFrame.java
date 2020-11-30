@@ -137,7 +137,7 @@ public class MainFrame extends JFrame {
                 JOptionPane.showMessageDialog(MainFrame.this,
                         diapazonBox, "" +
                                 "Найти из диапазона", JOptionPane.QUESTION_MESSAGE);
-                cell.setdiap(searchFrom.getText(), searchTo.getText());
+                cell.setRange(searchFrom.getText(), searchTo.getText());
                 getContentPane().repaint();
             }
         };
@@ -180,27 +180,18 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    // Считать значения границ отрезка, шага из полей ввода
                     Double from = Double.parseDouble(from_field.getText());
                     Double to = Double.parseDouble(to_field.getText());
                     Double step = Double.parseDouble(step_field.getText());
                     if ((from < to && step > 0.0) || (from > to && step < 0.0)) {
 
-                        // На основе считанных данных создать модель таблицы
                         data = new GornerTable(from, to, step, MainFrame.this.coefficients);
-                        // Создать новый экземпляр таблицы
                         JTable table = new JTable(data);
-                        // Установить в качестве визуализатора ячеек для класса Double разработанный визуализатор
                         table.setDefaultRenderer(Double.class, cell);
-                        // Установить размер строки таблицы в 30 пикселов
                         table.setRowHeight(30);
-                        // Удалить все вложенные элементы из контейнера hBoxResult
                         BoxResult.removeAll();
-                        // Добавить в hBoxResult таблицу, "обѐрнутую" в панель с полосами прокрутки
                         BoxResult.add(new JScrollPane(table));
-                        // Обновить область содержания главного окна
                         getContentPane().validate();
-                        //  Пометить ряд элементов меню как доступных saveToTextMenuItem.setEnabled(true);
                         saveToGraphicsMenuItem.setEnabled(true);
                         searchValueMenuItem.setEnabled(true);
                     } else {
@@ -209,7 +200,6 @@ public class MainFrame extends JFrame {
                                         "Ошибка ввода", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (NumberFormatException ex) {
-                    // В случае ошибки преобразования показать сообщение об ошибке
                     JOptionPane.showMessageDialog(MainFrame.this, "Ошибка в формате записи числа с плавающей точкой",
                             "Ошибочный формат числа", JOptionPane.WARNING_MESSAGE);
                 }
@@ -217,22 +207,16 @@ public class MainFrame extends JFrame {
         });
 
         JButton resetButton = new JButton("Очистить поля");
-        // Задать действие на нажатие "Очистить поля" и привязать к кнопке
         resetButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                // Установить в полях ввода значения по умолчанию
                 from_field.setText("0.0");
                 to_field.setText("1.0");
                 step_field.setText("0.1");
-                // Удалить все вложенные элементы контейнера BoxResult
                 BoxResult.removeAll();
-                // Добавить в контейнер пустую панель
                 BoxResult.add(new JPanel());
-                // Пометить элементы меню как недоступные
                 saveToTextMenuItem.setEnabled(false);
                 saveToGraphicsMenuItem.setEnabled(false);
                 searchValueMenuItem.setEnabled(false);
-                // Обновить область содержания главного окна
                 getContentPane().validate();
             }
         });
@@ -284,24 +268,20 @@ public class MainFrame extends JFrame {
 
     protected void saveToGraphicsFile(File selectedFile) {
         try {
-            // Создать новый байтовый поток вывода, направленный в указанный файл
             DataOutputStream out = new DataOutputStream(new FileOutputStream(selectedFile));
-            // Записать в поток вывода попарно значение X в точке, значение многочлена в точке
             for (int i = 0; i < data.getRowCount(); i++) {
                 out.writeDouble((Double) data.getValueAt(i, 0));
                 out.writeDouble((Double) data.getValueAt(i, 1));
-            } // Закрыть поток вывода
+            }
             out.close();
         } catch (Exception e) {
-            // Исключительную ситуацию "ФайлНеНайден" в данном случае можно не обрабатывать, так как мы файл создаѐм, а не открываем для чтения
+            JOptionPane.showMessageDialog(MainFrame.this, "Smth went wrong:\n" + e);
         }
     }
 
     protected void saveToTextFile(File selectedFile) {
         try {
-            // Создать новый символьный поток вывода, направленный в указанный файл
             PrintStream out = new PrintStream(selectedFile);
-            // Записать в поток вывода заголовочные сведения
             out.println("Результаты табулирования многочлена по схеме Горнера");
             out.print("Многочлен: ");
             for (int i = 0; i < coefficients.length; i++) {
@@ -316,10 +296,9 @@ public class MainFrame extends JFrame {
             for (int i = 0; i < data.getRowCount(); i++) {
                 out.println("Значение в точке " + data.getValueAt(i, 0) + " равно " + data.getValueAt(i, 1));
             }
-            // Закрыть поток
             out.close();
         } catch (FileNotFoundException e) {
-            // Исключительную ситуацию "ФайлНеНайден" можно не // обрабатывать, так как мы файл создаѐм, а не открываем
+            JOptionPane.showMessageDialog(MainFrame.this, "Smth went wrong:\n" + e);
         }
     }
 
@@ -341,7 +320,7 @@ public class MainFrame extends JFrame {
 					}
 				writer.close();
 				}catch(Exception e){
-
+                    JOptionPane.showMessageDialog(MainFrame.this, "Smth went wrong:\n" + e);
 				}
     }
 }

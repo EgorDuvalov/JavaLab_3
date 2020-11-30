@@ -36,7 +36,7 @@ public class GornerTableCell  implements TableCellRenderer{
             panel.setBackground(Color.RED);
             label.setForeground(Color.BLACK);
         }
-        else if(FLAG){
+        else if(!FLAG){
             panel.setBackground(Color.WHITE);
             label.setForeground(Color.BLACK);
         }
@@ -60,7 +60,7 @@ public class GornerTableCell  implements TableCellRenderer{
     public void setSearch(String search) {
         this.search = search;
     }
-    public void setdiap(String searchFrom, String searchTo) {
+    public void setRange(String searchFrom, String searchTo) {
         this.searchFrom = searchFrom;
         this.searchTo = searchTo;
     }
