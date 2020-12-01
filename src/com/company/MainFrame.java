@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
 
@@ -32,7 +31,7 @@ public class MainFrame extends JFrame {
     private GornerTableCell cell = new GornerTableCell();
 
     private GornerTable data;
-    private JFileChooser fileChooser = null;
+    private JFileChooser fileChooser = new JFileChooser();
 
     private DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance();
 
@@ -51,18 +50,27 @@ public class MainFrame extends JFrame {
         menu.add(fileMenu);
         JMenu tableMenu = new JMenu("Таблица");
         menu.add(tableMenu);
-        JMenu spravkaMenu = new JMenu("Справка");
-        menu.add(spravkaMenu);
+        JMenu helpMenu = new JMenu("Справка");
+        menu.add(helpMenu);
 
         Action saveToTextAction = new AbstractAction("Сохранить в текстовый файл") {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (fileChooser == null) {
-                    fileChooser = new JFileChooser();
-                    fileChooser.setCurrentDirectory(new File("."));
+                if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                    String filename = fileChooser.getSelectedFile().getAbsolutePath();
+                    if (!filename.endsWith(".txt")){
+                        filename+=".txt";
+                    }
+                    try {
+                        File file = new File(filename);
+                        FileWriter out = new FileWriter(file);
+
+                        out.close();
+
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Ошибка сохранения " + filename, "Ошибка", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-                if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION)
-                    saveToTextFile(fileChooser.getSelectedFile());
             }
         };
         saveToTextMenuItem = fileMenu.add(saveToTextAction);
@@ -172,7 +180,7 @@ public class MainFrame extends JFrame {
                                 "О программе", JOptionPane.INFORMATION_MESSAGE);
             }
         };
-        informationItem = spravkaMenu.add(aboutProgramAction);
+        informationItem = helpMenu.add(aboutProgramAction);
         informationItem.setEnabled(true);
 
         JButton calculateButton = new JButton("Вычислить");
@@ -292,7 +300,6 @@ public class MainFrame extends JFrame {
             out.println("");
             out.println("Интервал от " + data.getFrom() + " до " + data.getTo() + " с шагом " + data.getStep());
             out.println("====================================================");
-            // Записать в поток вывода значения в точках
             for (int i = 0; i < data.getRowCount(); i++) {
                 out.println("Значение в точке " + data.getValueAt(i, 0) + " равно " + data.getValueAt(i, 1));
             }
